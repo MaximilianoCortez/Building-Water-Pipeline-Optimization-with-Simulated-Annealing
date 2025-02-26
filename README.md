@@ -16,7 +16,6 @@ This project implements the **Simulated Annealing** algorithm to optimize the se
 ```
 📁 pipeline_optimization
 │── 📄 main.py   # Main code
-│── 📄 LICENSE   # Project license
 │── 📄 README.md # This file
 ```
 
