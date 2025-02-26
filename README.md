@@ -1,5 +1,4 @@
-# Embodied-carbon-cost-and-size-analysis-for-optimal-water-network-design-in-buildings-
-# Pipeline Optimization with Simulated Annealing
+# Building Water Pipeline Optimization with Simulated Annealing
 
 ## 📌 Description
 This project implements the **Simulated Annealing** algorithm to optimize the selection of pipe diameters in a fluid flow system. The goal is to minimize costs while meeting velocity and pressure loss constraints. Penalties are presented as function of environmental and techno-economic parameters to assess sustainable design. 
