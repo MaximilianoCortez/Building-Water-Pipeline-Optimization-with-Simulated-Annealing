@@ -30,7 +30,7 @@ pip install numpy psutil
 Run the script with:
 
 ```bash
-python main.py
+python Code.py
 ```
 
 The program will display:
