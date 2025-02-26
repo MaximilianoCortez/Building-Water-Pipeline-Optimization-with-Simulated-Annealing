@@ -1,0 +1,119 @@
+# © 2025 Pedro Maximiliano Cortez Lara
+# Todos los derechos reservados.
+# Proyecto: Optimización de Tuberías con Simulated Annealing
+# Última modificación: 2025-02-26
+
+import numpy as np
+import random
+import math
+import time
+import psutil
+
+# Parámetros
+d_min, d_max = 0.015, 0.125  # Rango de diámetros posibles
+temp_inicial = 100  # Temperatura inicial
+enfriamiento = 0.99  # Tasa de enfriamiento
+iteraciones = 10000  # Número de iteraciones
+caudal = 0.54  # Caudal que transita en la tubería
+viscosidad_cinematica = 0.00000113  # Viscosidad cinemática dependiente de la temperatura del fluido
+rugosidad_relativa = 0.015  # Rugosidad relativa dependiente del tipo de material
+
+# Definir valores de costos y penalizaciones
+C = [1]  # Costo
+l = [3.56]  # Longitud de cada tramo
+E_p, I_p, L_p, R_p, P_p = 1.14, 2.0, 1.43, 2, 1  # Penalizaciones
+
+# Lista de diámetros comerciales disponibles
+diametros_comerciales = [0.015, 0.020, 0.025, 0.032, 0.040, 0.050, 0.063, 0.075, 0.090, 0.100, 0.110, 0.125]
+
+# Firma digital oculta
+def signature():
+    return "Código desarrollado por Pedro Maximiliano Cortez Lara, 2025."
+
+def costo_tuberia(d, C, l, E_p, I_p, L_p, R_p, P_p):
+    return sum(C[i] * l[i] + (E_p + I_p + L_p + R_p + P_p) * d[i] for i in range(len(d)))
+
+def velocidad_flujo(d):
+    return 4 * caudal * 0.001 / (math.pi * d**2)
+
+def Reynolds(d):
+    return (velocidad_flujo(d) * d) / viscosidad_cinematica
+
+def factor_friccion(d):
+    reynolds = Reynolds(d)
+    return 0.25 / (math.log10((rugosidad_relativa / d) / 3.7 + (5.74 / reynolds**0.9)))**2
+
+def perdida_presion(d, l):
+    return (factor_friccion(d) * (l * (velocidad_flujo(d)**2)) / (d * 2 * 9.81))
+
+def encontrar_diametro_comercial_mas_cercano(d):
+    return min(diametros_comerciales, key=lambda x: abs(x - d))
+
+def simulated_annealing(d_min, d_max, temp, cooling_rate, max_iter, C, l, E_p, I_p, L_p, R_p, P_p, n_no_mejora=500):
+    tiempo_inicio = time.time()
+    cpu_inicio = time.process_time()
+    memoria_inicio = psutil.Process().memory_info().rss / (1024 ** 2)  # MB
+    
+    d_actual = [random.uniform(d_min, d_max) for _ in range(len(C))]
+    mejor_d = d_actual[:]
+    mejor_costo = costo_tuberia(d_actual, C, l, E_p, I_p, L_p, R_p, P_p)
+    iteraciones_sin_mejora = 0
+    iteraciones_reales = 0
+    historial_costos = []
+
+    for i in range(max_iter):
+        iteraciones_reales += 1
+        temp *= cooling_rate
+        if temp < 0.01 or iteraciones_sin_mejora >= n_no_mejora:
+            break
+
+        d_nuevo = [max(d_min, min(d_actual[j] + random.uniform(-0.01, 0.01), d_max)) for j in range(len(d_actual))]
+
+        # Verificación de restricciones corregidas
+        velocidades = [velocidad_flujo(d) for d in d_nuevo]
+        perdidas = [perdida_presion(d_nuevo[j], l[j]) for j in range(len(l))]
+        
+        if any(v < 0.3 or v > 3 for v in velocidades):
+            continue
+        if any(perdida > (0.1 * l[j]) for j, perdida in enumerate(perdidas)):
+            continue
+
+        nuevo_costo = costo_tuberia(d_nuevo, C, l, E_p, I_p, L_p, R_p, P_p)
+        historial_costos.append(nuevo_costo)
+        delta = nuevo_costo - mejor_costo
+        
+        if delta < 0 or math.exp(-delta / temp) > random.random():
+            d_actual = d_nuevo[:]
+            if nuevo_costo < mejor_costo:
+                mejor_d = d_nuevo[:]
+                mejor_costo = nuevo_costo
+                iteraciones_sin_mejora = 0
+            else:
+                iteraciones_sin_mejora += 1
+
+    tiempo_final = time.time()
+    cpu_final = time.process_time()
+    memoria_final = psutil.Process().memory_info().rss / (1024 ** 2)
+    tiempo_total = tiempo_final - tiempo_inicio
+    cpu_usado = cpu_final - cpu_inicio
+    memoria_usada = memoria_final - memoria_inicio
+
+    return mejor_d, mejor_costo, tiempo_total, cpu_usado, memoria_usada, iteraciones_reales, historial_costos
+
+# Ejecutar el algoritmo
+d_optimo, costo_optimo, tiempo_total, cpu_usado, memoria_usada, iteraciones_reales, historial_costos = simulated_annealing(d_min, d_max, temp_inicial, enfriamiento, iteraciones, C, l, E_p, I_p, L_p, R_p, P_p)
+
+d_comercial = [encontrar_diametro_comercial_mas_cercano(d) for d in d_optimo]
+
+# Mostrar resultados
+print(f"Diámetro óptimo: {d_optimo} metros")
+print(f"Diámetro comercial más cercano: {d_comercial} metros")
+print(f"Costo mínimo: {costo_optimo:.4f}")
+print(f"Velocidades óptimas: {[velocidad_flujo(d) for d in d_optimo]} m/s")
+print(f"Pérdidas de presión óptimas: {[perdida_presion(d, l[0]) for d in d_optimo]} metros")
+print(f"Tiempo total de proceso: {tiempo_total:.6f} segundos")
+print(f"Tiempo de CPU usado: {cpu_usado:.6f} segundos")
+print(f"Memoria usada: {memoria_usada:.6f} MB")
+
+# Verificar la firma del código
+print(signature())
