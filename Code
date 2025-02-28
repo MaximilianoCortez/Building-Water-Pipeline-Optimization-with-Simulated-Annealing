@@ -6,8 +6,8 @@ import psutil
 
 # Parameters
 d_min, d_max = 0.015, 0.125  # Range of possible diameters
-initial_temp = 100  # Initial temperature
-cooling_rate = 0.99  # Cooling rate
+initial_temp = 95  # Initial temperature
+cooling_rate = 0.98  # Cooling rate
 iterations = 10000  # Number of iterations
 flow_rate = 0.54  # Flow rate through the pipe
 kinematic_viscosity = 0.00000113  # Kinematic viscosity depending on fluid temperature
@@ -41,7 +41,7 @@ def find_nearest_commercial_diameter(d):
     return min(commercial_diameters, key=lambda x: abs(x - d))
 
 def simulated_annealing(
-    d_min, d_max, temp, cooling_rate, max_iter, C, l, E_p, I_p, L_p, R_p, P_p, n_no_improvement=500
+    d_min, d_max, temp, cooling_rate, max_iter, C, l, E_p, I_p, L_p, R_p, P_p, n_no_improvement=200
 ):
     """
     Performs optimization using the Simulated Annealing algorithm.
