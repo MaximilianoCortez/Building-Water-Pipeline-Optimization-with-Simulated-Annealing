@@ -9,7 +9,7 @@ This project implements the **Simulated Annealing** algorithm to optimize the se
 - Calculates fluid velocity, Reynolds number, and friction factor.
 - Adjusts to available commercial diameters.
 - Evaluates execution time, CPU usage, and memory consumption.
-- Penalties: embodied carbon, pipe lifespan, pipe ease of installation, pipe ease of recycling, and pipe max work pressure.
+- Components: embodied carbon, pipe lifespan, pipe ease of installation, pipe ease of recycling, and pipe max work pressure.
   
 ## 📂 Project Structure
 ```
