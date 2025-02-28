@@ -16,7 +16,7 @@ relative_roughness = 0.015  # Relative roughness depending on material type
 # Define cost values and penalties
 C = [1]  # Cost
 l = [3.56]  # Length of each segment
-E_p, I_p, L_p, R_p, P_p = 1.14, 2.0, 1.43, 2, 1  # Penalties
+E_p, I_p, L_p, R_p, P_p = 1.14, 2.0, 1.43, 2, 1  # Environmental components
 
 # List of available commercial diameters
 commercial_diameters = [0.015, 0.020, 0.025, 0.032, 0.040, 0.050, 0.063, 0.075, 0.090, 0.100, 0.110, 0.125]
