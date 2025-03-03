@@ -1,0 +1,9 @@
+cff-version: 1.1.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: Cortez-Lara
+  given-names: Pedro
+title:MaximilianoCortez/Building-Water-Pipeline-Optimization-with-Simulated-Annealing: Building Water Pipeline Optimization with Simulated Annealing Latest
+version: v1.0
+doi: https://doi.org/10.5281/zenodo.14963422 
+date-released: 2025-03-03
