@@ -39,8 +39,7 @@ The program will display:
 - **Fluid velocity** in each pipe.
 - **Pressure loss**.
 - **Total execution time**, **CPU** usage, and **memory** usage.
-- **Hidden digital signature verification**.
-
+  
 ## 🔧 Simulated Annealing Function
 The function `simulated_annealing` contains the following parameters:
 
@@ -54,7 +53,7 @@ def simulated_annealing(
 - `cooling_rate`: Cooling rate per iteration.
 - `max_iter`: Maximum number of iterations.
 - `C`, `l`: Cost parameters and pipeline lengths.
-- `E_p`, `I_p`, `L_p`, `R_p`, `P_p`: Penalty factors for constraints.
+- `E_p`, `I_p`, `L_p`, `R_p`, `P_p`: Components factors for environmental assessment.
 - `n_no_improvement`: Number of iterations without improvement before stopping.
 
 ### **Returns:**
