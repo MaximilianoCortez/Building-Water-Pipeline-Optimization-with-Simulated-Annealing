@@ -1,5 +1,7 @@
 # Building Water Pipeline Optimization with Simulated Annealing
 
+DOI: https://doi.org/10.5281/zenodo.14963422
+
 ## 📌 Description
 This project implements the **Simulated Annealing** algorithm to optimize the selection of pipe diameters in a fluid flow system. The goal is to minimize costs while meeting velocity and pressure loss constraints.
 
@@ -66,6 +68,6 @@ def simulated_annealing(
 - `cost_history`: Cost values at each iteration.
 
 ## 👤 Author
-**Pedro Maximiliano Cortez Lara, Benjamin Sanchez Andrade, and Hector Alfonso Barrios Piña** - 2025.
+**Pedro Maximiliano Cortez Lara** - 2025.
 
 If you use this code, give me credit or send improvements! 😊
